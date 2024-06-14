@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Reader</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}">
+    
+    <style>
+        /* Light mode styles */
+        body {
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .container {
+            margin-top: 20px;
+        }
+        .markdown-content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        pre {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #e1e4e8;
+            overflow: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384; /* 代码字体颜色 */
+        }
+        {{ light_css_string|safe }}
+
+        /* Dark mode styles */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1e1e1e;
+                color: #cfcfcf;
+            }
+            .markdown-content {
+                background-color: #2e2e2e;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            }
+            pre {
+                background-color: #3e3e3e;
+                border: 1px solid #555555;
+            }
+            code {
+                color: #ff79c6; /* 代码字体颜色 */
+            }
+            {{ dark_css_string|safe }}
+        }
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Markdown Reader</h1>
+    <div class="list-group">
+        {% for file in files %}
+            <a href="{{ url_for('read_file', filename=file) }}" class="list-group-item list-group-item-action">
+                {{ file }}
+            </a>
+        {% endfor %}
+    </div>
+    <div class="mt-5">
+        {% if content %}
+            <h2>Rendered Content</h2>
+            <div class="markdown-content">{{ content|safe }}</div>
+        {% endif %}
+    </div>
+</div>
+</body>
+</html>
